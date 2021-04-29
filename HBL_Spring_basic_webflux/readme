@@ -1,0 +1,50 @@
+Spring WebFlux
+    (1).概念
+         base on：SpringMVC ， SpringBoot, Maven, java8新特性
+         a.是Spring5添加新的模块，用于web开发的，功能SpringMVC类似，使用响应式编程出现的框架
+         b.传统的web框架，如springmvc基于Servlet容器，WebFlux是一种异步非阻塞的框架，异步非阻塞的框架在Servlet3.1以后才支持，核心是基于Reactor的相关API的实现
+         c.异步非阻塞:*异步和同步 针对 调用者
+                    *阻塞和非阻塞 针对 被调用者
+         d.特点：非阻塞：在有限的资源下，提高系统吞吐量和伸缩性，以reactor为基础实现响应式编程
+                函数式编程：使用java8函数式编程实现路由请求
+    (2).响应式编程(Reactive)
+         响应式编程是一种面向数据流和变化传播的编程范式。这意味着可以在编程语言中很方便地表达静态或动态的数据流，而相关的计算模型会自动将变化的值通过数据流进行传播
+         a.java8以及之前的版本
+           *提供观察者模式两个类:Observer和Observable
+         b.Java9及以上 Flow(publisher , subscriber)
+         c.reactor实现
+            (1).响应式编程中，reactor是满足Reactive的规范框架
+            (2).reactor有两个核心类，Mono和Flux,这两个类都实现接口Publisher,提高丰富操作符。Flux对象实现发布者，返回N个元素；Mono实现发布至，返回0或者1个元素
+            (3).Flux和Mono都是数据流的发布者。使用Flux和Mono都可以发出三种数据信号：元素值，错误信号，完成信号。
+                错误信号，完成信号都代表终止信号，告诉订阅者数据流结束了,不能共存。错误信号也是终止信号同事把错误信息发给订阅者
+            (4).操作符：对数据流进行的操作，成为操作符
+                map: 元素映射成为新元素
+                flatmap: 元素映射成为流
+    (3).Spring WebFlux执行流程和核心API
+        是基于Reactor，默认容器是Netty，Netty是高性能，基于异步事件的NIO框架（异步非阻塞）
+        a.Netty
+           *BIO-阻塞
+           *NIO-非阻塞
+        b.SpringWebFlux执行过程和SpringMVC相似
+          *SpringWebFlux核心控制器:DispatchHandler,实现接口WebHandler
+          *接口WebHandler有一个方法handle()--根据http请求信息获取对应mapping,调用具体的业务方法,返回处理结果
+          *DispatchHandler：负责请求的处理
+          *HandlerMapping：请求查询到处理的方法
+          *HandlerAdapter：真正负责请求处理
+          *HandlerResultHandler：响应结果处理
+        c.SpringWebFlux实现函数式编程，有两个接口：RouterFunction(路由处理)和HandlerFunction(处理函数)
+    (4).Spring WebFlux实现方式(基于注解编程模型)--只需要把相关以来配置到项目中，springBoot自动引入配置相关运行器，默认情况下使用Netty服务器
+        a.引入依赖：spring-boot-starter-webflux
+        b.配置启动的端口号
+        c.创建包和相关类和方法
+        d.创建controller
+    (5).Spring WebFlux实现方式(基于函数式编程模型)
+        a.需要自己初始化服务器
+        b.有两个核心接口RouterFunction(路由处理：请求转发给响应的handler)和HandlerFunction(处理请求生成响应的函数)。核心任务定义两个函数式街楼的实现并且启动需要的服务器
+        c.请求和响应不再是ServletRequest和ServletResponse,而是ServerRequest和ServerResponse
+        第一步，创建Handler，替代Controller
+        第二步，初始化服务器，编写Router
+        第三步，创建服务器完成适配
+        第四步，最终调用
+               使用webClient调用
+
