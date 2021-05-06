@@ -10,19 +10,28 @@ public class Employee {
     private Department department;
     private Date birth;
 
+    public Employee(Integer id, String lastName, String email, Integer gender, Department department,Date birth) {
+        this.id = id;
+        this.lastName = lastName;
+        this.email = email;
+        this.gender = gender;
+        this.department = department;
+        this.birth = birth;
+    }
 
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", gender=" + gender +
+                ", department=" + department +
+                ", birth=" + birth +
+                '}';
+    }
 
-    public Employee(Integer id, String lastName, String email, Integer gender, Department department, Date birth) {
-
-		this.id = id;
-		this.lastName = lastName;
-		this.email = email;
-		this.gender = gender;
-		this.department = department;
-		this.birth = birth;
-	}
-
-	public Integer getId() {
+    public Integer getId() {
         return id;
     }
 

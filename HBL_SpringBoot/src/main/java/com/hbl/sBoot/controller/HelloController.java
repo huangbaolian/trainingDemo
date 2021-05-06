@@ -1,10 +1,12 @@
 package com.hbl.sBoot.controller;
 
+import com.hbl.sBoot.exception.UserNotExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -25,9 +27,12 @@ public class HelloController {
 
     @ResponseBody
     @RequestMapping("/hello")
-    public String hello(){
+    public String hello(@RequestParam("user") String user){
         Logger logger = LoggerFactory.getLogger(HelloController.class);
         logger.info("this is slf4j");
+        if (user.equals("aaa")){
+            throw new UserNotExistException();
+        }
         return "Hello World";
     }
     //查出一些数据在页面
